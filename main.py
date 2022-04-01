@@ -1,7 +1,8 @@
 import read_dataset as read
 import decision_trees as dt
 
-DATASET = "cifar-10-python.tar.gz"
+ZIP     = "cifar-10-python.tar.gz"
+DATASET = "./dataset/"
 AGENTS  = {
     "DT": [dt.DecisionTrees, None],  # decision trees
     "LR": [None, None],  # logistic regression
@@ -30,7 +31,7 @@ def run_agents(dataset, agents_to_run):
 if __name__ == "__main__":
     to_run = ["DT"]              # agents to test
     init_agents(to_run)          # initialize wanted agents
-    run_agents(dataset, to_run)  # run wanted agents
+    run_agents(DATASET, to_run)  # run wanted agents
 
 
 # --- End Main Function --- #
