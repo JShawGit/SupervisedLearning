@@ -1,4 +1,12 @@
 
+""" Get CIFAR 10 --------------------------------------------------------------------------------------------------- """
+def getCifar():
+    from keras.datasets import cifar10
+    return cifar10.load_data()
+# --- End Get CIFAR 10 --- #
+
+
+
 """ Unzips A File -------------------------------------------------------------------------------------------------- """
 def unzip(filename):
     import tarfile
