@@ -1,6 +1,5 @@
 import read_dataset
 import read_dataset as read
-import decision_tree as dt
 import logistic_regression as lr
 import numpy as np
 import matplotlib.pyplot as plt
@@ -63,7 +62,7 @@ LABELS = {
 
 AGENTS  = {
     #     [Initializer, Agent object]
-    "DT": [dt.DecisionTree, None],  # decision trees
+    "DT": [None, None],  # decision trees
     "LR": [None, None],  # logistic regression
     "NB": [None, None],  # naive-bayes
     "PT": [None, None]   # perceptron
@@ -88,57 +87,40 @@ def fit_agents(training_data, agents_to_run, epochs, batch_size):
     for run in agents_to_run:
         if AGENTS[run][0] is not None:
             AGENTS[run][1].fit(training_data, epochs, batch_size)
-# --- End Train Agents --- #
+# --- End Fit Agents --- #
 
 
 
-""" Test Agents ---------------------------------------------------------------------------------------------------- """
-def test_agents(test_data, agents_to_run):
-    print(test_data)
-# --- End Test Agents --- #
+""" LR Res --------------------------------------------------------------------------------------------------------- """
+def lr_res(type, iter, st, rate):
+    iterations = iter
+    step = st
+
+    learning_rate = rate
+    cost_flag = True
+    dim = 32*32*3
+
+    # train the model, get learning results
+    lr_model = lr.logistic_regression(iterations, learning_rate, cost_flag, dim, LABELS[type])
+    lr_data = lr_model.log_reg_model(step)
+
+    # plot costs
+    y = np.array(lr_data['costs'])
+    x = np.array(range(len(y)))
+    plt.plot(x, y)
+    plt.title("Learning Costs: " + type)
+    plt.xlabel("Iterations")
+    plt.ylabel("Costs")
+    plt.savefig("LR_" + type + ".png")
+# --- End LR Res --- #
 
 
 
 """ Main Function -------------------------------------------------------------------------------------------------- """
 if __name__ == "__main__":
-    # get data to learn with
-    (x_train, y_train), (x_test, y_test) = read_dataset.getCifar()
-    data_dict = {  # divide by 255 to keep image-colors in uniform range
-        "train": [x_train/255.0, y_train.flatten()],
-        "test":  [x_test/255.0,  y_test.flatten()]
-    }
 
-
-    # visualize data by plotting images
-    fig, ax = plt.subplots(5, 5)
-    k = 0
-
-    for i in range(5):
-        for j in range(5):
-            ax[i][j].imshow(x_train[k], aspect='auto')
-            k += 1
-
-    plt.show()
-
-
-    # initialize all wanted agents
-    to_run = ["DT"]
-    init_agents(to_run)
-
-    # Logistic Regression
-    iterations = 2000
-    learning_rate = 0.01 #0.005
-    cost_flag = True
-    dim = 32*32*3
-    lr_model = lr.logistic_regression(iterations, learning_rate, cost_flag, dim, LABELS['airplane'])
-
-    lr_model_data = lr_model.log_reg_model()
-    # End Logistic regression
-
-    # train 1 time
-    fit_agents(data_dict["train"], to_run, 100, 100)
-
-    # test 1 time
-    test_agents(data_dict["test"], to_run)
+    # make graphs
+    for c in CLASSES:
+        lr_res(c, 2000, 100, 0.01)
 
 # --- End Main Function --- #
