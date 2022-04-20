@@ -108,7 +108,7 @@ def lr_res(type, iter, st, rate):
     y = np.array(lr_data['costs'])
     x = np.array(range(len(y)))
     plt.plot(x, y)
-    plt.title("Learning Costs: " + type)
+    plt.title("Learning costs of " + type + " with learning rate " + str(rate))
     plt.xlabel("Iterations")
     plt.ylabel("Costs")
     plt.savefig("LR_" + type + ".png")
@@ -121,6 +121,6 @@ if __name__ == "__main__":
 
     # make graphs
     for c in CLASSES:
-        lr_res(c, 2000, 100, 0.01)
+        lr_res(c, 1000, 50, 0.1)
 
 # --- End Main Function --- #
