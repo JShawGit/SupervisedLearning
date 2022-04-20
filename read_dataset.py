@@ -1,4 +1,6 @@
-
+import numpy
+import tensorflow
+from tensorflow import keras
 """ Get CIFAR 10 --------------------------------------------------------------------------------------------------- """
 def getCifar():
     from keras.datasets import cifar10

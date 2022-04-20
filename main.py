@@ -1,6 +1,9 @@
 import read_dataset
 import read_dataset as read
 import decision_tree as dt
+import logistic_regression as lr
+import numpy as np
+import matplotlib.pyplot as plt
 
 PATH  = "./dataset/"
 ZIP   = "cifar-10-python.tar.gz"
@@ -29,6 +32,34 @@ CLASSES = [
     "ship",
     "truck"
 ]
+"""""
+LABELS:
+    0 - airplane
+    1 - automobile
+    2 - bird
+    3 - cat
+    4 - deer
+    5 - dog
+    6 - frog
+    7 - horse 
+    8 - ship
+    9 - truck
+"""""
+LABELS = {
+    "airplane": 0,
+    "automobile": 1,
+    "bird": 2,
+    "cat": 3,
+    "deer": 4,
+    "dog": 5,
+    "frog": 6,
+    "horse": 7,
+    "ship": 8,
+    "truck": 9
+}
+
+
+
 
 AGENTS  = {
     #     [Initializer, Agent object]
@@ -73,13 +104,36 @@ if __name__ == "__main__":
     # get data to learn with
     (x_train, y_train), (x_test, y_test) = read_dataset.getCifar()
     data_dict = {  # divide by 255 to keep image-colors in uniform range
-        "train": [x_train/255.0, y_train/255.0],
-        "test":  [x_test/255.0,  y_test/255.0]
+        "train": [x_train/255.0, y_train.flatten()],
+        "test":  [x_test/255.0,  y_test.flatten()]
     }
+
+
+    # visualize data by plotting images
+    fig, ax = plt.subplots(5, 5)
+    k = 0
+
+    for i in range(5):
+        for j in range(5):
+            ax[i][j].imshow(x_train[k], aspect='auto')
+            k += 1
+
+    plt.show()
+
 
     # initialize all wanted agents
     to_run = ["DT"]
     init_agents(to_run)
+
+    # Logistic Regression
+    iterations = 2000
+    learning_rate = 0.01 #0.005
+    cost_flag = True
+    dim = 32*32*3
+    lr_model = lr.logistic_regression(iterations, learning_rate, cost_flag, dim, LABELS['airplane'])
+
+    lr_model_data = lr_model.log_reg_model()
+    # End Logistic regression
 
     # train 1 time
     fit_agents(data_dict["train"], to_run, 100, 100)
