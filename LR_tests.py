@@ -61,6 +61,7 @@ def lr_res(iter, st, rate):
         plt.legend(ncol=2, fontsize=10)
         plt.ylim(minval, maxval)
         plt.xlim(0, iter/step)
+        plt.xtickformat('%g0')
         plt.savefig("LR_total_costs" + str(learning_rate) + ".png")
 
 # --- End LR Res --- #
