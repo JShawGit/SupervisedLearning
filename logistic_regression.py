@@ -90,7 +90,7 @@ def calc_cost_grads(w, b, x, y):
 
 
 # Optimizing weights and bias
-def train_lr(w, b, x, y, num_iterations, learning_rate, print_flag):
+def train_lr(w, b, x, y, num_iterations, learning_rate, print_flag, step):
     costs = []
 
     for i in range(num_iterations):
@@ -102,10 +102,10 @@ def train_lr(w, b, x, y, num_iterations, learning_rate, print_flag):
         w -= learning_rate * dw
         b -= learning_rate * db
 
-        if i % 100 == 0:
+        if i % step == 0:
             costs.append(cost)
 
-        if print_flag and i % 100 == 0:
+        if print_flag and i % step == 0:
             print("Cost after iteration %i: %f" % (i, cost))
 
     params = {'w': w,
@@ -155,12 +155,13 @@ class logistic_regression:
     # --- End Init logistic Regression --- #
 
     # Logistic Regression driver
-    def log_reg_model(self):
+    def log_reg_model(self, step):
         w, b = initialize_zeros(self.dim)
 
         params, grads, costs = train_lr(w, b, self.x_train,
                                         self.y_train, self.num_iterations,
-                                        self.learning_rate, self.print_cost)
+                                        self.learning_rate, self.print_cost,
+                                        step)
 
         w = params['w']
         b = params['b']
