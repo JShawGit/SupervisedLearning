@@ -107,6 +107,8 @@ def lr_res(type, iter, st, rate):
     # plot costs
     y = np.array(lr_data['costs'])
     x = np.array(range(len(y)))
+
+    plt.clf()
     plt.plot(x, y)
     plt.title("Learning costs of " + type + " with learning rate " + str(round(rate, 4)))
     plt.xlabel("Iterations")
