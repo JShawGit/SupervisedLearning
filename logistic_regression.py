@@ -176,10 +176,12 @@ class logistic_regression:
             'w': w,
             'b': b,
             'learning_rate': self.learning_rate,
-            'num_iterations': self.num_iterations
+            'num_iterations': self.num_iterations,
+            'train_acc': 100.0 - np.mean(np.abs(y_predict_train - self.y_train)) * 100.0,
+            'test_acc':  100.0 - np.mean(np.abs(y_predict_test  - self.y_test))  * 100.0
         }
 
-        print("train accuracy: {} %".format(100 - np.mean(np.abs(y_predict_train - self.y_train)) * 100))
-        print("test accuracy: {} %".format(100 - np.mean(np.abs(y_predict_test - self.y_test)) * 100))
+        print("train accuracy: {} %".format(model_data['train_acc']))
+        print("test accuracy:  {} %".format(model_data['test_acc']))
 
         return model_data

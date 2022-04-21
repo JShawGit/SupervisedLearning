@@ -103,6 +103,7 @@ def lr_res(type, iter, st, rate):
     # train the model, get learning results
     lr_model = lr.logistic_regression(iterations, learning_rate, cost_flag, dim, LABELS[type])
     lr_data = lr_model.log_reg_model(step)
+    print(lr_data)
 
     # plot costs
     y = np.array(lr_data['costs'])
@@ -114,6 +115,50 @@ def lr_res(type, iter, st, rate):
     plt.xlabel("Iterations")
     plt.ylabel("Costs")
     plt.savefig("LR_" + type + ".png")
+
+# --- End LR Res --- #
+
+
+
+""" LR acc --------------------------------------------------------------------------------------------------------- """
+def lr_acc(type, iter, st, rate):
+    iterations = iter
+    step = st
+
+    learning_rate = rate
+    cost_flag = True
+    dim = 32*32*3
+
+    # train the model, get learning results
+    train = []
+    test  = []
+    for i in range(len(iterations)):
+        lr_model = lr.logistic_regression(iterations[i], learning_rate, cost_flag, dim, LABELS[type])
+        lr_data = lr_model.log_reg_model(step[i])
+        train.append(lr_data['train_acc'])
+        test.append(lr_data['test_acc'])
+
+    # plot train
+    y = np.array(train)
+    x = np.array(iterations)
+
+    plt.clf()
+    plt.plot(x, y, marker="o")
+    plt.title("Training accuracy of " + type + " with learning rate " + str(round(rate, 4)))
+    plt.xlabel("Iterations")
+    plt.ylabel("Accuracy")
+    plt.savefig("LR_Train_" + type + ".png")
+
+    # plot train
+    y = np.array(test)
+
+    plt.clf()
+    plt.plot(x, y)
+    plt.title("Testing accuracy of " + type + " with learning rate " + str(round(rate, 4)))
+    plt.xlabel("Iterations")
+    plt.ylabel("Accuracy")
+    plt.savefig("LR_Test_" + type + ".png")
+
 # --- End LR Res --- #
 
 
@@ -123,8 +168,16 @@ if __name__ == "__main__":
     import random
 
     # make graphs
+    """
+    # Cost
     for c in CLASSES:
-        rand_rate = random.uniform(0.005, 0.04)
-        lr_res(c, 1000, 10, rand_rate)
+        rand_rate = random.uniform(0.0001, 0.01)
+        lr_res(c, 500, 10, rand_rate)
+    """
+
+    # Accuracy
+    for c in CLASSES:
+        #rand_rate = random.uniform(0.0001, 0.01)
+        lr_acc(c, [10, 50, 100, 1000], [1, 5, 10, 100], 0.01)
 
 # --- End Main Function --- #
