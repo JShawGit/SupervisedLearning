@@ -108,7 +108,7 @@ def lr_res(type, iter, st, rate):
     y = np.array(lr_data['costs'])
     x = np.array(range(len(y)))
     plt.plot(x, y)
-    plt.title("Learning costs of " + type + " with learning rate " + str(rate))
+    plt.title("Learning costs of " + type + " with learning rate " + str(round(rate, 4)))
     plt.xlabel("Iterations")
     plt.ylabel("Costs")
     plt.savefig("LR_" + type + ".png")
@@ -118,9 +118,11 @@ def lr_res(type, iter, st, rate):
 
 """ Main Function -------------------------------------------------------------------------------------------------- """
 if __name__ == "__main__":
+    import random
 
     # make graphs
     for c in CLASSES:
-        lr_res(c, 1000, 50, 0.1)
+        rand_rate = random.uniform(0.005, 0.04)
+        lr_res(c, 1000, 10, rand_rate)
 
 # --- End Main Function --- #
