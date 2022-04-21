@@ -31,6 +31,12 @@ def lr_res(iter, st, rate):
     plt.style.use('classic')
     plt.ylabel("Costs")
 
+    c = 0
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+              '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+    maxval = -100000.0
+    minval = 100000.0
+
     # get results for each image type
     for type in CLASSES:
         # train the model, get learning results
@@ -40,13 +46,22 @@ def lr_res(iter, st, rate):
         # plot costs
         y = np.array(lr_data['costs'])
         x = np.array(range(len(y)))
-        plt.plot(x, y, label=type)
+        plt.plot(x, y, colors[c], label=type)
+        c += 1
+
+        val = max(y)
+        if val > maxval:
+            maxval = val
+
+        val = min(y)
+        if val < minval:
+            minval = val
 
         # print plot
-        plt.legend()
-        plt.ylim(0.2, 0.8)
-        plt.xlim(0, 100)
-        plt.savefig("LR_total_costs.png")
+        plt.legend(ncol=2, fontsize=10)
+        plt.ylim(minval, maxval)
+        plt.xlim(0, iter/step)
+        plt.savefig("LR_total_costs" + str(learning_rate) + ".png")
 
 # --- End LR Res --- #
 

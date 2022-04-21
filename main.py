@@ -36,7 +36,10 @@ def fit_agents(training_data, agents_to_run, epochs, batch_size):
 if __name__ == "__main__":
 
     # Cost
-    lr.lr_res(1000, 1, 0.01)
+    lr.lr_res(500, 10, 0.02)
+    lr.lr_res(500, 10, 0.01)
+    lr.lr_res(500, 10, 0.005)
+    lr.lr_res(500, 10, 0.001)
 
     """    # Accuracy
     for c in CLASSES:
