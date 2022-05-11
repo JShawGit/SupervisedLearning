@@ -1,5 +1,3 @@
-from multiprocessing.pool import ThreadPool as Pool
-import multiprocessing
 import numpy as np
 
 """ Decision Tree ======================================================================================================

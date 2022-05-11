@@ -1,40 +1,41 @@
+import read_dataset_tree_percept as read_dataset
 from sklearn.metrics import accuracy_score
-import read_dataset_tree_percept
 import perceptron as pt
-
-PATH  = "./dataset/"
-TRAINING_FILES = ["data_batch_1", "data_batch_2", "data_batch_3", "data_batch_4", "data_batch_5"]
-TESTING_FILES = ["test_batch"]
-ZIP   = "cifar-10-python.tar.gz"
 
 """ Main Function -------------------------------------------------------------------------------------------------- """
 if __name__ == "__main__":
     """ Good References:
     https://www.binarystudy.com/2021/09/how-to-load-preprocess-visualize-CIFAR-10-and-CIFAR-100.html#download
     """
-
     # actual data for learning
-    train, test = read_dataset.read_dataset(PATH)
-    train = read_dataset.preprocessing(train)
-    test  = read_dataset.preprocessing(test)
-    test = {
-        "data":   train["data"].pop(),
-        "labels": train["labels"].pop()
-    }
-
-    # get data labels
-    batch_meta = read_dataset.unpickle(PATH + "batches.meta")
-    labels = batch_meta['label_names']
+    test, train = read_dataset.read_dataset()
 
     """ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ """
-    pt_model = pt.Perceptron(len(test["data"][0]), len(labels))
-    pt_model.fit(train["data"][0], train["labels"][0], 10)
+    # train models
+    X = train["data"]
+    Y = train["labels"]
+    epochs = [10, 100, 500, 1000]
+    iterations = 10
+    for e in epochs:
+        for i in [50, 100, 250, 500, 750, 1000, 5000, 10000, 25000, 50000]:
+            print("\n\n--------------------------------------------------------------------")
+            print("TESTING FOR e=" + str(e) + " AND i=" + str(i))
 
-    pred = pt_model.predict([test["data"][0]])
-    print(pred)
-    print(test["labels"][0])
+            # initialize model
+            pt_model = pt.Perceptron(len(test["data"][0]), 10)
 
 
+            # fit
+            pt_model.fit(X[0:i-1], Y[0:i-1], epochs=e)
+            pred = pt_model.predict(test["data"])
 
+            # print predictions
+            file = open("./perceptron/i_" + str(i) + "_e_" + str(e) + "_predictions.txt", "w")
+            file.write(str(pred))
+            file.close()
 
+            # print accuracy
+            file = open("./perceptron/i_" + str(i) + "_e_" + str(e) + "_predictions_accuracy.txt", "w")
+            file.write(str(accuracy_score(test["labels"], pred)))
+            file.close()
 # --- End Main Function --- #
